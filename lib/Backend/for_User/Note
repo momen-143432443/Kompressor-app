@@ -1,0 +1,16 @@
+why we using GetxController?
+for example, if we create a simple class with variables and use it in somewhere else, we must to create a new instance, example :-
+
+class User{
+    final  int varr = 0;
+    final String strVar = 'fgvsejkgvn';
+        
+        void sum(int a,int b){
+            return a+b;
+        }
+  final user = User();
+}
+
+and it will a lot of space and time.
+But we use GetxController, it's allow to and some functions and wrap with functions or triggers, and we can create a new instance with simple class,
+but instead create instance again and again, we create it for a once

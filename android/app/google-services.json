@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "495016700131",
+    "project_id": "kompressor-e176f",
+    "storage_bucket": "kompressor-e176f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:495016700131:android:75452b07c4c71950977dd6",
+        "android_client_info": {
+          "package_name": "com.example.ecar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQHjOhWRx28mGcbqsTeFGuVvlu5LDdm2w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
