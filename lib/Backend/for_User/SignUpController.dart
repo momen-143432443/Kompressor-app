@@ -1,6 +1,7 @@
 import 'package:ecar/Backend/Features/fullScreenLoader.dart';
 import 'package:ecar/Backend/authenticationRespository/authenticationRespository.dart';
 import 'package:ecar/Backend/features/snacks.dart';
+import 'package:ecar/Backend/for_User/LoginController.dart';
 import 'package:ecar/Backend/for_User/user_model.dart';
 import 'package:ecar/Backend/for_User/user_respository.dart';
 import 'package:ecar/Frontend/Login&Signup&Logout/signUpUploadImage.dart';
@@ -112,6 +113,20 @@ class SignUpController extends GetxController {
       } finally {
         Fullscreenloader.stopLoading();
       }
+    }
+  }
+
+  Future<void> googleSignUp() async {
+    try {
+      // isGoogleLoading.value = true;
+      final auth = AuthenticationRespository.instance;
+      await auth.signInWithGoogle();
+      // isGoogleLoading.value = false;
+      Get.off(() => const Signupuploadimage());
+      final uC = await AuthenticationRespository.instance.signInWithGoogle();
+      await userController.saveUserRecord(uC);
+    } catch (e) {
+      e.toString();
     }
   }
 }

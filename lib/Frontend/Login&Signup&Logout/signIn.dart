@@ -14,7 +14,7 @@ class _SignInState extends State<SignIn> {
     return Scaffold(
       body: SafeArea(
           child: SingleChildScrollView(
-        // key: controller.NavigatorKey,
+        key: loginController.loginFormKey,
         child: Column(
           children: [
             Container(

@@ -6,9 +6,6 @@ import 'package:ecar/Backend/BLOCS/ProfilePageBloc/profilePageState.dart';
 import 'package:ecar/Backend/BLOCS/homeBloc/HomeBlocItregration.dart';
 import 'package:ecar/Backend/BLOCS/homeBloc/HomeblocEvent.dart';
 import 'package:ecar/Backend/BLOCS/homeBloc/HomeblocState.dart';
-import 'package:ecar/Backend/BLOCS/homeBloc/deleteNote/DeleteNoteBloc.dart';
-import 'package:ecar/Backend/BLOCS/homeBloc/deleteNote/DeleteNoteEvent.dart';
-import 'package:ecar/Backend/BLOCS/homeBloc/deleteNote/DeleteNoteState.dart';
 import 'package:ecar/Backend/CarStructure/carController.dart';
 import 'package:ecar/Backend/EshopBackend/EShopController.dart';
 import 'package:ecar/Backend/authenticationRespository/authenticationRespository.dart';
@@ -345,7 +342,7 @@ final quickSign = Column(
         QuickSignIn().facebook,
         width2,
         GestureDetector(
-            onTap: () => loginController.googleSignIn(),
+            onTap: () async => await loginController.googleSignIn(),
             child: QuickSignIn().google),
         width2,
         QuickSignIn().apple
@@ -380,7 +377,7 @@ final youDontHaveAnAccountPressToSignUp = Row(
           "sign up",
           style: TextStyle(color: black),
         ),
-        onPressed: () => Get.off(() => const SignUp())),
+        onPressed: () => Get.to(() => const SignUp())),
   ],
 );
 
@@ -513,7 +510,7 @@ final quickRegister = Column(
         QuickSignIn().facebook,
         width2,
         GestureDetector(
-            onTap: () => loginController.googleSignIn(),
+            onTap: () async => await signUpController.googleSignUp(),
             child: QuickSignIn().google),
         width2,
         QuickSignIn().apple
@@ -916,7 +913,7 @@ class UploadImageSign extends StatelessWidget {
             ? Image.file(carImg!.path as File)
             : const Icon(
                 Icons.add,
-                color: white,
+                color: grey,
               ),
       ),
     );
@@ -1024,27 +1021,27 @@ final naviTextBotton = Padding(
 //================================================//
 ///=============[HomeScreen]=====================//
 //==============================================//
-final homeFunctions = Column(
-  children: [
-    Column(
+homeFunctions() => Column(
       children: [
-        usernameAnduserpicHomeScreen,
-        hSpace,
-        carImageAndcarmakemodelhomeScreen(),
-        hSpace,
-        searchBarHomeScreen,
-        hSpace,
-        notesAvailable()
+        Column(
+          children: [
+            usernameAnduserpicHomeScreen,
+            hSpace,
+            carImageAndcarmakemodelhomeScreen(),
+            hSpace,
+            searchBarHomeScreen,
+            hSpace,
+            notesAvailable()
+          ],
+        ),
       ],
-    ),
-  ],
-);
+    );
 
 final refreshBloc = BlocProvider(
   create: (context) => HBlocIntegration(noteController)..add(HBlocLoad()),
   child: BlocBuilder(
     builder: (context, state) {
-      return homeFunctions;
+      return homeFunctions();
     },
   ),
 );
@@ -1248,9 +1245,6 @@ notesAvailable() => MultiBlocProvider(
           create: (context) =>
               HBlocIntegration(Notescontroller())..add(HBlocLoad()),
         ),
-        BlocProvider(
-          create: (context) => DeleteBloc(Notescontroller()),
-        )
       ],
       child: BlocBuilder<HBlocIntegration, Homeblocstate>(
         builder: (context, stateN) {
@@ -1282,7 +1276,7 @@ notesAvailable() => MultiBlocProvider(
           }
           if (stateN is HBlocLoaded) {
             List<NotesModel> noteList = stateN.notesModel;
-            return BlocBuilder<DeleteBloc, DeleteNoteState>(
+            return BlocBuilder<HBlocIntegration, Homeblocstate>(
               builder: (context, state) {
                 return Container(
                     decoration:
@@ -1294,56 +1288,101 @@ notesAvailable() => MultiBlocProvider(
                       shrinkWrap: true,
                       itemCount: noteList.length,
                       itemBuilder: (c, index) {
-                        return Dismissible(
-                          movementDuration: const Duration(seconds: 2),
-                          key: UniqueKey(),
-                          direction: DismissDirection.endToStart,
-                          onDismissed: (DismissDirection direction) => context
-                              .read<DeleteBloc>()
-                              .add(DeleteDocument(noteList[index].docId)),
-                          background: const Card(
-                            elevation: 4,
-                            color: redColor,
-                            child: Icon(
-                              Icons.delete,
-                              color: white,
-                            ),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Container(
-                                width: 400,
-                                clipBehavior: Clip.antiAlias,
-                                decoration: BoxDecoration(
-                                    color: carGrey,
-                                    borderRadius: BorderRadius.circular(12)),
-                                child: ListTile(
-                                    title: Text(
-                                        stateN.notesModel[index].subject,
-                                        style: const TextStyle(color: white)),
-                                    subtitle: Text(
-                                        stateN.notesModel[index].title,
-                                        style: const TextStyle(color: white)),
-                                    trailing: Padding(
-                                      padding: const EdgeInsets.only(
-                                          bottom: 35, left: 120),
-                                      child: Text(
-                                        DateFormat('dd/MM hh:mm a')
-                                            .format(stateN
-                                                .notesModel[index].timePost
-                                                .toDate())
-                                            .toString(),
-                                        style: const TextStyle(color: white),
-                                      ),
-                                    )),
+                        return PopupMenuButton<String>(
+                          offset: const Offset(22, 34),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(13)),
+                          itemBuilder: (context) {
+                            return [
+                              PopupMenuItem<String>(
+                                value: '1',
+                                child: Text(
+                                    'The note will be delete at ${DateFormat('dd/MM hh:mm a').format(stateN.notesModel[index].timePost.toDate()).toString()}'),
                               ),
-                              h2,
-                            ],
+                            ];
+                          },
+                          child: Dismissible(
+                            movementDuration: const Duration(seconds: 2),
+                            key: UniqueKey(),
+                            direction: DismissDirection.endToStart,
+                            onDismissed: (DismissDirection direction) => context
+                                .read<HBlocIntegration>()
+                                .add(HBlocDeleteE(noteList[index].docId)),
+                            background: const Card(
+                              elevation: 4,
+                              color: redColor,
+                              child: Icon(
+                                Icons.delete,
+                                color: white,
+                              ),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Container(
+                                  width: 400,
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: BoxDecoration(
+                                      color: carGrey,
+                                      borderRadius: BorderRadius.circular(12)),
+                                  child: ListTile(
+                                      title: Text(
+                                          stateN.notesModel[index].subject,
+                                          style: const TextStyle(color: white)),
+                                      subtitle: Text(
+                                          stateN.notesModel[index].title,
+                                          style: const TextStyle(color: white)),
+                                      trailing: Padding(
+                                        padding: const EdgeInsets.only(
+                                            bottom: 35, left: 120),
+                                        child: Text(
+                                          DateFormat('dd/MM hh:mm a')
+                                              .format(stateN
+                                                  .notesModel[index].timePost
+                                                  .toDate())
+                                              .toString(),
+                                          style: const TextStyle(color: white),
+                                        ),
+                                      )),
+                                ),
+                                h2,
+                              ],
+                            ),
                           ),
                         );
                       },
                     ));
+                /* PopupMenuButton<String>(
+                                        offset: const Offset(22, 34),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(13)),
+                                        itemBuilder: (context) {
+                                          return [
+                                            PopupMenuItem<String>(
+                                              value: '1',
+                                              child: Text(
+                                                  'The note will be delete at ${DateFormat('dd/MM hh:mm a').format(stateN.notesModel[index].timePost.toDate()).toString()}'),
+                                            ),
+                                            /*  const PopupMenuItem<String>(
+                                              value: 'Withdraw',
+                                              child: Text('Withdraw',
+                                                  style:
+                                                      TextStyle(color: white)),
+                                            ),
+                                            const PopupMenuItem<String>(
+                                              value: 'Help',
+                                              child: Text('Help',
+                                                  style:
+                                                      TextStyle(color: white)),
+                                            ), */
+                                          ];
+                                        },
+                                        child: const Icon(
+                                          Iconsax.more_2,
+                                          color: blueColor,
+                                          size: 10,
+                                        )), */
               },
             );
           } else if (stateN is HBlocNoData) {
@@ -1390,16 +1429,16 @@ final homeFloatingActionButton = SpeedDial(
 ///=====================[SettingsScreen]==========================///
 ////////////////////////////////////////////////////////////////////
 
-final settingText = Padding(
-  padding: const EdgeInsets.only(right: 270),
-  child: Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      IconButton(
-          onPressed: () => Get.back(), icon: const Icon(Iconsax.backward)),
-      Text('Settings', style: GoogleFonts.aleo(fontSize: 23, color: black)),
-    ],
-  ),
+final settingText = Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    IconButton(onPressed: () => Get.back(), icon: const Icon(Iconsax.backward)),
+    Text('Settings', style: GoogleFonts.aleo(fontSize: 23, color: black)),
+    Icon(
+      Iconsax.backward,
+      color: Colors.transparent,
+    )
+  ],
 );
 
 final forUserText =
@@ -2795,7 +2834,7 @@ final wallet = Padding(
 
 balanceInWallet() => Container(
       width: widthOfButton.width / 1.3,
-      height: widthOfButton.height / 7,
+      height: widthOfButton.height / 7 + 18,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(13), color: carGrey),
       child: Padding(

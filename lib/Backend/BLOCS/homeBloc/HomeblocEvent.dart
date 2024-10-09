@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +14,7 @@ class HBlocResfresh extends HomeBlocEvent {
   List<Object?> get props => [];
 }
 
+// ignore: must_be_immutable
 class HBlocDeleteE extends HomeBlocEvent {
   String docId;
   HBlocDeleteE(this.docId);

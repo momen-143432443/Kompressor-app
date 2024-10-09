@@ -13,6 +13,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+final userController = Get.put(ProfileController());
+
 class LoginController extends GetxController {
   static LoginController get instance => Get.find();
 
@@ -119,9 +121,9 @@ class LoginController extends GetxController {
       await auth.signInWithGoogle();
       // isGoogleLoading.value = false;
       auth.screenRediect();
-      final userCredentials =
-          await AuthenticationRespository.instance.signInWithGoogle();
-      await userController.saveUserRecord(userCredentials);
+      // final userCredentials =
+      await AuthenticationRespository.instance.signInWithGoogle();
+      // await userController.saveUserRecord(userCredentials);
     } catch (e) {
       isGoogleLoading.value = false;
       e.toString();

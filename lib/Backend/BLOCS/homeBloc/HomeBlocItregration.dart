@@ -21,6 +21,18 @@ class HBlocIntegration extends Bloc<HomeBlocEvent, Homeblocstate> {
         emit(HBlocError(e.toString()));
       }
     });
+    on<HBlocDeleteE>(
+      (event, emit) async {
+        try {
+          emit(HBlocLoading());
+          final note = await notescontroller.getAllNotes();
+          await notescontroller.deleteSomeNotes(event.docId);
+          emit(HBlocLoaded(note));
+        } catch (e) {
+          emit(HBlocError(e.toString()));
+        }
+      },
+    );
   }
 }
 

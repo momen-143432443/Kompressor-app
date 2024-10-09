@@ -13,8 +13,11 @@ class _ExploreState extends State<Explore> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-          child: Column(
-        children: [ads, services, payment],
+          child: SingleChildScrollView(
+        child: ListView(
+          shrinkWrap: true,
+          children: [ads, services, payment],
+        ),
       )),
     );
   }

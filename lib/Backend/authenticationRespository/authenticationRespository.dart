@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+// import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class AuthenticationRespository extends GetxController {
   static AuthenticationRespository get instance => Get.find();
@@ -130,9 +131,14 @@ class AuthenticationRespository extends GetxController {
       throw 'Something went wrong';
     }
   }
-  //*-------------------------------------*//
-  //         Sign up with google
 
+  //*-------------------------------------*//
+  ////============[socialSign]============////
+  //*-------------------------------------*//
+
+  /////////////////////////////////////////////
+  ///               [Google]               ///
+  ///////////////////////////////////////////
   Future<UserCredential?> signInWithGoogle() async {
     try {
       // Trigger the authentication flow
@@ -150,32 +156,55 @@ class AuthenticationRespository extends GetxController {
 
       // Once signed in, return the UserCredential
       return await FirebaseAuth.instance.signInWithCredential(credential);
-    } on FirebaseAuthException catch (e) {
-      throw exceptions(e.message.toString());
+    } catch (e) {
+      if (e is FirebaseAuthException && e.code == 'user-not-found') {
+        throw signUpFirst();
+      }
     }
+    return null;
   }
 
-// Future<UserCredential?> signUpWithGoogle() async {
-//     try {
-//       // Trigger the authentication flow
-//       final GoogleSignInAccount? googleUser = await GoogleSignIn().
+  Future<User?> registerWithGoogle() async {
+    try {
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-//       // Obtain the auth details from the request
-//       final GoogleSignInAuthentication? googleAuth =
-//           await googleUser?.authentication;
+      if (googleUser != null) {
+        // Obtain the auth details from the request
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
 
-//       // Create a new credential
-//       final credential = GoogleAuthProvider.credential(
-//         accessToken: googleAuth?.accessToken,
-//         idToken: googleAuth?.idToken,
-//       );
+        // Create a new credential
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
 
-//       // Once signed in, return the UserCredential
-//       return await FirebaseAuth.instance.signInWithCredential(credential);
-//     } on FirebaseAuthException catch (e) {
-//       throw exceptions(e.message.toString());
-//     }
-//   }
+        // Sign in to Firebase with the Google credentials
+        UserCredential userCredential =
+            await auth.signInWithCredential(credential);
+
+        // Ensure the user is newly created (registration)
+        if (userCredential.additionalUserInfo!.isNewUser) {
+          return userCredential.user; // Return the user
+        } else {
+          print("User already exists. Please sign in.");
+          return null; // User already exists
+        }
+      }
+    } catch (error) {
+      print("Error registering with Google: $error");
+    }
+    return null; // Return null if registration fails
+  }
+
+  /////////////////////////////////////////////
+  ///              [Facebook]              ///
+  ///////////////////////////////////////////
+
+  /////////////////////////////////////////////
+  ///                [Apple]               ///
+  ///////////////////////////////////////////
 
   Future<void> logout() async {
     await GoogleSignIn().signOut();

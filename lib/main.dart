@@ -10,7 +10,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
+final authController = AuthenticationRespository();
 void main() async {
   // final WidgetsBinding widgetBinding =
   WidgetsFlutterBinding.ensureInitialized();

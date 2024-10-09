@@ -25,7 +25,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           child: SingleChildScrollView(
             child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: homeFunctions),
+                child: homeFunctions()),
           ),
         )),
         floatingActionButton: homeFloatingActionButton);

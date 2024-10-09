@@ -14,8 +14,10 @@ class Fullscreenloader {
               width: 120,
               height: 120,
               child: Center(
-                  child: LoadingAnimationWidget.waveDots(
-                      color: blueColor, size: 55)))),
+                  child: Stack(children: [
+                LoadingAnimationWidget.waveDots(color: white, size: 56),
+                LoadingAnimationWidget.waveDots(color: blueColor, size: 55),
+              ])))),
     );
   }
 
