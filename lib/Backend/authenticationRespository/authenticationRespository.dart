@@ -140,25 +140,30 @@ class AuthenticationRespository extends GetxController {
   ///               [Google]               ///
   ///////////////////////////////////////////
   Future<UserCredential?> signInWithGoogle() async {
-    try {
-      // Trigger the authentication flow
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-      // Obtain the auth details from the request
-      final GoogleSignInAuthentication? googleAuth =
-          await googleUser?.authentication;
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
 
-      // Create a new credential
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
-      );
-
-      // Once signed in, return the UserCredential
-      return await FirebaseAuth.instance.signInWithCredential(credential);
-    } catch (e) {
-      if (e is FirebaseAuthException && e.code == 'user-not-found') {
-        throw signUpFirst();
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+    UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+    if (userCredential.user == null) {
+      signUpFirst();
+    } else if (userCredential.user != null) {
+      try {
+        // Once signed in, return the UserCredential
+        return userCredential;
+      } catch (e) {
+        if (e is FirebaseAuthException && e.code == 'user-not-found') {
+          throw signUpFirst();
+        }
       }
     }
     return null;

@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 final userController = Get.put(ProfileController());
 
@@ -115,18 +116,22 @@ class LoginController extends GetxController {
   }
 
   Future<void> googleSignIn() async {
+    final auth = AuthenticationRespository.instance;
+    final pro =
+        auth.auth.currentUser?.providerData.map((e) => e.providerId).first;
     try {
-      // isGoogleLoading.value = true;
-      final auth = AuthenticationRespository.instance;
-      await auth.signInWithGoogle();
-      // isGoogleLoading.value = false;
-      auth.screenRediect();
-      // final userCredentials =
-      await AuthenticationRespository.instance.signInWithGoogle();
-      // await userController.saveUserRecord(userCredentials);
+      if (pro!.isEmpty) {
+        return signUpFirst();
+      } else if (pro.isNotEmpty) {
+        if (pro == 'google.com') {
+          await auth.signInWithGoogle();
+          auth.screenRediect();
+        }
+      }
     } catch (e) {
-      isGoogleLoading.value = false;
-      e.toString();
+      if (e is FirebaseAuthException && e.code == 'user-not-foun') {
+        return signUpFirst();
+      }
     }
   }
 }

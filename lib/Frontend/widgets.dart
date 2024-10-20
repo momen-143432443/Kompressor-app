@@ -1280,7 +1280,7 @@ notesAvailable() => MultiBlocProvider(
               builder: (context, state) {
                 return Container(
                     decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(30)),
+                        BoxDecoration(borderRadius: BorderRadius.circular(12)),
                     width: 400,
                     height: container.height / 3.60,
                     child: ListView.builder(
@@ -1301,25 +1301,38 @@ notesAvailable() => MultiBlocProvider(
                               ),
                             ];
                           },
-                          child: Dismissible(
-                            movementDuration: const Duration(seconds: 2),
-                            key: UniqueKey(),
-                            direction: DismissDirection.endToStart,
-                            onDismissed: (DismissDirection direction) => context
-                                .read<HBlocIntegration>()
-                                .add(HBlocDeleteE(noteList[index].docId)),
-                            background: const Card(
-                              elevation: 4,
-                              color: redColor,
-                              child: Icon(
-                                Icons.delete,
-                                color: white,
-                              ),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Dismissible(
+                                movementDuration: const Duration(seconds: 2),
+                                key: UniqueKey(),
+                                direction: DismissDirection.endToStart,
+                                onDismissed: (DismissDirection direction) =>
+                                    context.read<HBlocIntegration>().add(
+                                        HBlocDeleteE(noteList[index].docId)),
+                                background: Card(
+                                  elevation: 4,
+                                  color: redColor,
+                                  child: Padding(
+                                    padding: appSym,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Icon(
+                                          Icons.delete,
+                                          color: Colors.transparent,
+                                        ),
+                                        Icon(
+                                          Icons.delete,
+                                          color: white,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                child: Container(
                                   width: 400,
                                   clipBehavior: Clip.antiAlias,
                                   decoration: BoxDecoration(
@@ -1345,9 +1358,9 @@ notesAvailable() => MultiBlocProvider(
                                         ),
                                       )),
                                 ),
-                                h2,
-                              ],
-                            ),
+                              ),
+                              h2,
+                            ],
                           ),
                         );
                       },
@@ -2481,7 +2494,7 @@ const carparts = Column(
   children: [
     Card(
       color: green,
-      child: Text('carparts'),
+      child: Text('car parts'),
     )
   ],
 );
@@ -2490,7 +2503,7 @@ const carservices = Column(
   children: [
     Card(
       color: orange,
-      child: Text('ca service'),
+      child: Text('car service'),
     )
   ],
 );

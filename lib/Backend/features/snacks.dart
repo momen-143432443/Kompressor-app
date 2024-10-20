@@ -14,7 +14,7 @@ import 'package:get/get.dart';
 signUpFirst() {
   return ScaffoldMessenger.of(navigator!.context).showSnackBar(SnackBar(
     dismissDirection: DismissDirection.down,
-    width: widthOfButton.width / 1.3,
+    width: widthOfButton.width / 1.3 + 20,
     behavior: SnackBarBehavior.floating,
     backgroundColor: white,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
