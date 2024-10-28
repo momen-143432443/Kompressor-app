@@ -29,8 +29,10 @@ import 'package:ecar/Frontend/Screens/generalPages/ExplorerTriggers/KWallet.dart
 import 'package:ecar/Frontend/Screens/generalPages/ExplorerTriggers/TelephonePage.dart';
 import 'package:ecar/Frontend/Screens/generalPages/ProfileScreen.dart';
 import 'package:ecar/Frontend/Screens/generalPages/RsesndPasswordScreen.dart';
+import 'package:ecar/Frontend/Screens/generalPages/SettingParts/Language.dart';
+import 'package:ecar/Frontend/Screens/generalPages/SettingParts/MyActivties.dart';
 import 'package:ecar/Frontend/Screens/generalPages/UpdatePage.dart';
-import 'package:ecar/Frontend/Screens/generalPages/settings.dart';
+import 'package:ecar/Frontend/Screens/generalPages/SettingParts/settings.dart';
 import 'package:ecar/tools/colorsTool.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -746,42 +748,44 @@ carListInfo() => MultiBlocProvider(
                   padding: const EdgeInsets.only(top: 290),
                   child: Container(
                     width: navigatorKey.currentContext?.width,
-                    // height: navigatorKey.currentContext?.height,
+                    height: navigatorKey.currentContext!.height / 2.5,
                     decoration: BoxDecoration(
                         color: white, borderRadius: BorderRadius.circular(30)),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 24),
-                      child: Column(
-                        children: [
-                          Text('${state.carsModel.nameYourCar}',
-                              style:
-                                  GoogleFonts.aleo(fontSize: 33, color: black)),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              FadeInLeft(
-                                child: Text(
-                                  '${state.carsModel.carMake.toUpperCase()} ${state.carsModel.carModel}',
-                                  style: GoogleFonts.aleo(
-                                      fontSize: 23, color: black),
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 24),
+                        child: Column(
+                          children: [
+                            Text('${state.carsModel.nameYourCar}',
+                                style: GoogleFonts.aleo(
+                                    fontSize: 33, color: black)),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                FadeInLeft(
+                                  child: Text(
+                                    '${state.carsModel.carMake.toUpperCase()} ${state.carsModel.carModel}',
+                                    style: GoogleFonts.aleo(
+                                        fontSize: 23, color: black),
+                                  ),
                                 ),
-                              ),
-                              FadeInRight(
-                                child: Text(
-                                  state.carsModel.carYear,
-                                  style: GoogleFonts.jua(
-                                      fontSize: 23, color: black),
+                                FadeInRight(
+                                  child: Text(
+                                    state.carsModel.carYear,
+                                    style: GoogleFonts.jua(
+                                        fontSize: 23, color: black),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          editCarInformations,
-                          const Divider(),
-                          carNotes,
-                          notesAvailable()
-                        ],
+                              ],
+                            ),
+                            editCarInformations,
+                            const Divider(),
+                            carNotes,
+                            notesAvailable()
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -1365,37 +1369,6 @@ notesAvailable() => MultiBlocProvider(
                         );
                       },
                     ));
-                /* PopupMenuButton<String>(
-                                        offset: const Offset(22, 34),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(13)),
-                                        itemBuilder: (context) {
-                                          return [
-                                            PopupMenuItem<String>(
-                                              value: '1',
-                                              child: Text(
-                                                  'The note will be delete at ${DateFormat('dd/MM hh:mm a').format(stateN.notesModel[index].timePost.toDate()).toString()}'),
-                                            ),
-                                            /*  const PopupMenuItem<String>(
-                                              value: 'Withdraw',
-                                              child: Text('Withdraw',
-                                                  style:
-                                                      TextStyle(color: white)),
-                                            ),
-                                            const PopupMenuItem<String>(
-                                              value: 'Help',
-                                              child: Text('Help',
-                                                  style:
-                                                      TextStyle(color: white)),
-                                            ), */
-                                          ];
-                                        },
-                                        child: const Icon(
-                                          Iconsax.more_2,
-                                          color: blueColor,
-                                          size: 10,
-                                        )), */
               },
             );
           } else if (stateN is HBlocNoData) {
@@ -1458,7 +1431,7 @@ final forUserText =
     Text('For user', style: GoogleFonts.aleo(fontSize: 15, color: black));
 
 final myActivities = GestureDetector(
-  onTap: () {},
+  onTap: () => Get.to(() => const MyActivities()),
   child: Row(
     children: [
       const Icon(
@@ -1506,7 +1479,7 @@ final deviceText =
     Text('Device', style: GoogleFonts.aleo(fontSize: 15, color: black));
 
 final language = GestureDetector(
-  onTap: () {},
+  onTap: () => Get.to(() => const Language()),
   child: Row(
     children: [
       const Icon(
@@ -1623,6 +1596,103 @@ final deleteAccount = GestureDetector(
       const Icon(Iconsax.profile_delete, color: redColor),
       width2,
       const Text('Delete account', style: TextStyle(color: redColor))
+    ],
+  ),
+);
+
+//////////////////////////////////////////////////////////////////////
+//////////////////////////[MyActivities]/////////////////////////////
+////////////////////////////////////////////////////////////////////
+
+final myActivitiesText = Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    IconButton(onPressed: () => Get.back(), icon: const Icon(Iconsax.backward)),
+    Text('My Activities', style: GoogleFonts.aleo(fontSize: 23, color: black)),
+    Icon(
+      Iconsax.backward,
+      color: Colors.transparent,
+    )
+  ],
+);
+
+final yourNoteAndArchive = Row(
+  mainAxisAlignment: MainAxisAlignment.spaceAround,
+  children: [
+    SizedBox(
+      width: widthOfButton.width / 3,
+      child: ElevatedButton(
+          style: ButtonStyle(
+              shape: WidgetStatePropertyAll(ContinuousRectangleBorder(
+                  borderRadius: BorderRadius.circular(20))),
+              backgroundColor: WidgetStatePropertyAll(blueColor)),
+          onPressed: () {},
+          child: const Text(
+            "Your notes",
+            style: TextStyle(color: white),
+          )),
+    ),
+    h,
+    SizedBox(
+      width: widthOfButton.width / 3,
+      child: ElevatedButton(
+          style: ButtonStyle(
+              shape: WidgetStatePropertyAll(ContinuousRectangleBorder(
+                  borderRadius: BorderRadius.circular(20))),
+              backgroundColor: WidgetStatePropertyAll(blueColor)),
+          onPressed: () {},
+          child: const Text(
+            "Archive",
+            style: TextStyle(color: white),
+          )),
+    ),
+  ],
+);
+
+/////////////////////////////////////////////////////////////////////
+/////////////////////////[Language]//////////////////////////////////
+////////////////////////////////////////////////////////////////////
+
+final languageText = Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    IconButton(onPressed: () => Get.back(), icon: const Icon(Iconsax.backward)),
+    Text('Languages', style: GoogleFonts.aleo(fontSize: 23, color: black)),
+    Icon(
+      Iconsax.backward,
+      color: Colors.transparent,
+    )
+  ],
+);
+
+final englishAndArabic = SizedBox(
+  width: widthOfButton.width / 1.1,
+  child: Column(
+    children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text('English', style: TextStyle(color: black, fontSize: 23)),
+          Radio(
+            value: false,
+            groupValue: {},
+            onChanged: (value) {},
+          )
+        ],
+      ),
+      size,
+      size,
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text('Arabic', style: TextStyle(color: black, fontSize: 23)),
+          Radio(
+            value: false,
+            groupValue: {},
+            onChanged: (value) {},
+          )
+        ],
+      )
     ],
   ),
 );
@@ -2471,14 +2541,26 @@ final categories = Padding(
     style: GoogleFonts.jua(color: grey),
   ),
 );
-
-const all = Column(
-  children: [
-    Card(
-      color: redColor,
-      child: Text('ALL'),
-    )
-  ],
+final mostSales = Padding(
+  padding: const EdgeInsets.only(right: 295),
+  child: Text('Most sales!', style: GoogleFonts.jua(color: grey, fontSize: 20)),
+);
+final thingMayYouLike = Padding(
+  padding: const EdgeInsets.only(right: 290),
+  child: Text('Things may you like',
+      style: GoogleFonts.jua(color: grey, fontSize: 13)),
+);
+final all = SingleChildScrollView(
+  child: Column(
+    children: [
+      mostSales,
+      Card(
+        color: redColor,
+        child: Text('ALL'),
+      ),
+      thingMayYouLike
+    ],
+  ),
 );
 
 const accessoiress = Column(

@@ -33,12 +33,6 @@ class ProfileController extends GetxController {
 
   Future<UserModel> fetchUserRecord() async {
     return await userRepo.fetchUserRecords();
-    // try {
-    //   final user = await userRepo.fetchUserRecords();
-    //   this.user(user);
-    // } catch (e) {
-    //   user(UserModel.usersModelempty());
-    // }
   }
 
   // Save user record from ang Registration provider
