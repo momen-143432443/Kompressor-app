@@ -1,6 +1,6 @@
 import 'package:ecar/Backend/CarStructure/car_repository.dart';
 import 'package:ecar/Backend/carNotes.dart/notesRepository.dart';
-import 'package:ecar/Backend/features/snacks.dart';
+import 'package:ecar/tools/snacks.dart';
 import 'package:ecar/Backend/for_User/user_respository.dart';
 import 'package:ecar/Frontend/Login&Signup&Logout/signIn.dart';
 import 'package:ecar/Frontend/Screens/editorialPages/editorialPage.dart';

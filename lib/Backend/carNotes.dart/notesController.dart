@@ -3,7 +3,7 @@ import 'package:ecar/Backend/Features/fullScreenLoader.dart';
 import 'package:ecar/Backend/authenticationRespository/authenticationRespository.dart';
 import 'package:ecar/Backend/carNotes.dart/notesModel.dart';
 import 'package:ecar/Backend/carNotes.dart/notesRepository.dart';
-import 'package:ecar/Backend/features/snacks.dart';
+import 'package:ecar/tools/snacks.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

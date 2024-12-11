@@ -1,6 +1,6 @@
 // ignore_for_file: unrelated_type_equality_checks
 import 'package:ecar/Backend/authenticationRespository/authenticationRespository.dart';
-import 'package:ecar/Backend/features/snacks.dart';
+import 'package:ecar/tools/snacks.dart';
 import 'package:ecar/Backend/for_User/ProfileController.dart';
 import 'package:ecar/Backend/Features/fullScreenLoader.dart';
 import 'package:ecar/Backend/for_User/user_model.dart';
