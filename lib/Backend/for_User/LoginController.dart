@@ -5,14 +5,13 @@ import 'package:ecar/Backend/for_User/ProfileController.dart';
 import 'package:ecar/Backend/Features/fullScreenLoader.dart';
 import 'package:ecar/Backend/for_User/user_model.dart';
 import 'package:ecar/main.dart';
-import 'package:ecar/navigationBar.dart';
+import 'package:ecar/tools/navigationBar.dart';
 import 'package:ecar/tools/colorsTool.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 final userController = Get.put(ProfileController());
 

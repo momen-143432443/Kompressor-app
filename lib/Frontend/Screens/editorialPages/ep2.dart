@@ -1,9 +1,5 @@
-import 'package:ecar/Frontend/Login&Signup&Logout/signIn.dart';
 import 'package:ecar/Frontend/Screens/editorialPages/epController.dart';
-import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ecar/tools/colorsTool.dart';
 import 'dart:math' as math;

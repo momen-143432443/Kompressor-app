@@ -5,7 +5,7 @@ import 'package:ecar/Backend/for_User/user_respository.dart';
 import 'package:ecar/Frontend/Login&Signup&Logout/signIn.dart';
 import 'package:ecar/Frontend/Screens/editorialPages/editorialPage.dart';
 import 'package:ecar/main.dart';
-import 'package:ecar/navigationBar.dart';
+import 'package:ecar/tools/navigationBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

@@ -1,7 +1,7 @@
 import 'package:ecar/Backend/CarStructure/carController.dart';
 import 'package:ecar/Frontend/widgets.dart';
 import 'package:ecar/main.dart';
-import 'package:ecar/navigationBar.dart';
+import 'package:ecar/tools/navigationBar.dart';
 import 'package:ecar/tools/colorsTool.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

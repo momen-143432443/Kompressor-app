@@ -1,4 +1,3 @@
-import 'package:ecar/Backend/connect.dart';
 import 'package:ecar/Backend/for_User/ProfileController.dart';
 import 'package:ecar/Backend/for_User/user_respository.dart';
 import 'package:ecar/Backend/Features/fullScreenLoader.dart';
@@ -29,14 +28,7 @@ class UpdateNameController extends GetxController {
     try {
       // Start loading
       Fullscreenloader.openLoadingDialog();
-      // connect check
-      // final isConnected = CheckConnect.instance.isConnected();
-      // if (await isConnected) {
-      //   return;
-      // }
-      // if (updateUserNameFormKey.currentState!.validate()) {
-      //   return;
-      // }
+
       Map<String, dynamic> username = {'FullName': name.text.trim()};
       await userRepo.updateSpecificData(username);
 

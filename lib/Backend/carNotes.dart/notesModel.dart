@@ -41,7 +41,7 @@ class NotesModel {
     if (documentSnapshot.data() != null) {
       final data = documentSnapshot.data()!;
       return NotesModel(
-          docId: documentSnapshot.id ?? '',
+          docId: documentSnapshot.id,
           id: data['ID'] ?? '',
           subject: data['Subject'] ?? '',
           email: data['Email'] ?? '',
