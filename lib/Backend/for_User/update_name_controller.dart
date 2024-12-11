@@ -28,7 +28,7 @@ class UpdateNameController extends GetxController {
   Future<void> updateName() async {
     try {
       // Start loading
-      Fullscreenloader.openLoadingDialog('Just hold on for a while');
+      Fullscreenloader.openLoadingDialog();
       // connect check
       // final isConnected = CheckConnect.instance.isConnected();
       // if (await isConnected) {

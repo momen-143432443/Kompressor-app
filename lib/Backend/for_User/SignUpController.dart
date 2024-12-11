@@ -21,7 +21,6 @@ class SignUpController extends GetxController {
   final password = TextEditingController();
   final phoneNum = TextEditingController();
   GlobalKey<FormState> signUpKey = GlobalKey<FormState>();
-  final userRepo = Get.put(UserRepository());
 
   Future<void> signUp() async {
     if (fullName.text.isEmpty &&
@@ -73,16 +72,7 @@ class SignUpController extends GetxController {
         fullName.text.length < 12) {
       try {
         // Start loading
-        Fullscreenloader.openLoadingDialog('Just hold on for a while');
-        // connect check
-        // final isConnected = CheckConnect.instance.isConnected();
-        // if (await isConnected) {
-        //   return;
-        // }
-        // if (signUpKey.currentState!.validate()) {
-        //   return;
-        // }
-
+        Fullscreenloader.openLoadingDialog();
         final auth = await AuthenticationRespository.instance
             .createEmailAndPasswordUser(
                 email.text.trim(), password.text.trim());

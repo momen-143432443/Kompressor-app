@@ -85,7 +85,7 @@ class ProfileController extends GetxController {
 
   void deleteUserAccount() async {
     try {
-      Fullscreenloader.openLoadingDialog('Just hold on for a while');
+      Fullscreenloader.openLoadingDialog();
       final reAuth = AuthenticationRespository.instance;
       final provider =
           reAuth.authUser!.providerData.map((e) => e.providerId).first;
@@ -110,7 +110,7 @@ class ProfileController extends GetxController {
 
   Future<void> reAuthenticationEmailAndPassword() async {
     try {
-      Fullscreenloader.openLoadingDialog('');
+      Fullscreenloader.openLoadingDialog();
 
       await AuthenticationRespository.instance.reAuthentication(
           verfiyEmail.text.trim(), verfiyPassword.text.trim());

@@ -67,27 +67,16 @@ class LoginController extends GetxController {
                     .where('Password', isEqualTo: user.value.password))) {
       try {
         // Start loading
-        Fullscreenloader.openLoadingDialog('Just hold on for a while');
+        Fullscreenloader.openLoadingDialog();
 
-        // connect check
-        // final isConnected = CheckConnect.instance.isConnected();
-        // if (await isConnected) {
-        //   return;
-        // }
-
-        // if (loginFormKey.currentState!.validate()) {
-        //   return;
-        // }
-
-        // if (remeberMe.value) {
-        //   localStorage.write('Remember_me_Email', email.text.trim());
-        //   localStorage.write('Remember_me_Password', password.text.trim());
-        // }
-        // if (!remeberMe.value) {
-        //   localStorage.write('Remember_me_Email', null);
-        //   localStorage.write('Remember_me_Password', null);
-        // }
-
+        if (remeberMe.value) {
+          localStorage.write('Remember_me_Email', email.text.trim());
+          localStorage.write('Remember_me_Password', password.text.trim());
+        }
+        if (!remeberMe.value) {
+          localStorage.write('Remember_me_Email', null);
+          localStorage.write('Remember_me_Password', null);
+        }
         await AuthenticationRespository.instance
             .loginEmailAndPasswordUser(email.text.trim(), password.text.trim());
 

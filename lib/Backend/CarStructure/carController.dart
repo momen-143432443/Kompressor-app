@@ -59,7 +59,7 @@ class CarController extends GetxController {
   }
 
   Future<void> updateCarControl() async {
-    Fullscreenloader.openLoadingDialog('Just hold on for a while');
+    Fullscreenloader.openLoadingDialog();
 
     Map<String, dynamic> carMakeJson = {
       "CarMake": carMake.text,
@@ -106,7 +106,7 @@ class CarController extends GetxController {
 
   Future<void> storeCarData() async {
     try {
-      Fullscreenloader.openLoadingDialog('Just hold on for a while');
+      Fullscreenloader.openLoadingDialog();
       final cars = CarsModel(
           carMake: carMake.text.trim(),
           carModel: carModel.text.trim(),

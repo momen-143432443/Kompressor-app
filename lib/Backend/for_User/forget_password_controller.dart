@@ -19,7 +19,7 @@ class ForgetPasswordController extends GetxController {
           .forgetPasswordEmailUser(email.text.trim());
 
       // Start loading
-      Fullscreenloader.openLoadingDialog('Loading for reset the password');
+      Fullscreenloader.openLoadingDialog();
       // Check of the internet connection
       final isConnected = await CheckConnect.instance.isConnected();
       if (!isConnected) {
@@ -46,7 +46,7 @@ class ForgetPasswordController extends GetxController {
   resendPasswordEmail(String email) async {
     try {
       // Start loading
-      Fullscreenloader.openLoadingDialog('Loading for reset the password');
+      Fullscreenloader.openLoadingDialog();
       // Check of the internet connection
       final isConnected = await CheckConnect.instance.isConnected();
       if (!isConnected) {

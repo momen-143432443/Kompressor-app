@@ -38,7 +38,7 @@ class Notescontroller extends GetxController {
     }
     if (subjectText.text.isNotEmpty && titleText.text.isNotEmpty) {
       try {
-        Fullscreenloader.openLoadingDialog('Just hold on for a while');
+        Fullscreenloader.openLoadingDialog();
         final notes = NotesModel(
             docId: FirebaseFirestore.instance.collection('Car Notes').doc().id,
             id: AuthenticationRespository.instance.authUser!.uid,
@@ -64,7 +64,7 @@ class Notescontroller extends GetxController {
 
   Future<void> deleteSpecificNote(String? id) async {
     try {
-      Fullscreenloader.openLoadingDialog('....');
+      Fullscreenloader.openLoadingDialog();
       await noteRepo.removeNoteRecords(id!);
       Fullscreenloader.stopLoading();
     } on FirebaseException catch (e) {
@@ -83,10 +83,14 @@ class Notescontroller extends GetxController {
 
   Future<void> deleteSomeNotes(String id) async {
     try {
-      Fullscreenloader.openLoadingDialog('Just hold on for a while');
+      Fullscreenloader.openLoadingDialog();
       await noteRepo.deleteSpecificNote(id);
       Fullscreenloader.stopLoading();
       deleteSuccess();
-    } catch (e) {}
+    } on PlatformException catch (e) {
+      exceptions(e.message.toString());
+    } catch (e) {
+      throw e.toString();
+    }
   }
 }
