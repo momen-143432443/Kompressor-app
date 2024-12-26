@@ -1,6 +1,6 @@
 import 'package:ecar/Backend/CarStructure/CarModel.dart';
 import 'package:ecar/Backend/CarStructure/car_repository.dart';
-import 'package:ecar/Backend/Features/fullScreenLoader.dart';
+import 'package:ecar/tools/fullScreenLoader.dart';
 import 'package:ecar/Backend/for_User/user_model.dart';
 import 'package:ecar/Frontend/Screens/CarInfoPages/carUploadImage.dart';
 import 'package:ecar/main.dart';

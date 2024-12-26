@@ -1,6 +1,6 @@
 import 'package:ecar/Backend/for_User/ProfileController.dart';
 import 'package:ecar/Backend/for_User/user_respository.dart';
-import 'package:ecar/Backend/Features/fullScreenLoader.dart';
+import 'package:ecar/tools/fullScreenLoader.dart';
 import 'package:ecar/Frontend/Screens/generalPages/ProfileScreen.dart';
 import 'package:ecar/tools/colorsTool.dart';
 import 'package:flutter/material.dart';

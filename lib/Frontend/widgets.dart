@@ -391,10 +391,6 @@ final kom = Text("K", style: GoogleFonts.jua(fontSize: 100, color: blueColor));
 
 final fullnameTextField = TextFormField(
   controller: signUpController.fullName,
-  // validator: (value) {
-  //   setState(() => ValidatorExe.validateEmail(value));
-  //   return null;
-  // },
   cursorRadius: const Radius.circular(3),
   autocorrect: true,
   enableInteractiveSelection: true,

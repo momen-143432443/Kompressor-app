@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecar/Backend/Features/fullScreenLoader.dart';
 import 'package:ecar/Backend/authenticationRespository/authenticationRespository.dart';
 import 'package:ecar/Backend/carNotes.dart/notesModel.dart';
 import 'package:ecar/Backend/carNotes.dart/notesRepository.dart';
@@ -8,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:ecar/tools/fullScreenLoader.dart';
 
 class Notescontroller extends GetxController {
   static Notescontroller get instance => Get.find();

@@ -2,7 +2,7 @@
 import 'package:ecar/Backend/authenticationRespository/authenticationRespository.dart';
 import 'package:ecar/tools/snacks.dart';
 import 'package:ecar/Backend/for_User/ProfileController.dart';
-import 'package:ecar/Backend/Features/fullScreenLoader.dart';
+import 'package:ecar/tools/fullScreenLoader.dart';
 import 'package:ecar/Backend/for_User/user_model.dart';
 import 'package:ecar/main.dart';
 import 'package:ecar/tools/navigationBar.dart';
