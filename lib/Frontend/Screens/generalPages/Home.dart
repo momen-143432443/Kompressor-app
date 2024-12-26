@@ -3,6 +3,7 @@ import 'package:ecar/Backend/BLOCS/homeBloc/HomeBlocItregration.dart';
 import 'package:ecar/Backend/BLOCS/homeBloc/HomeblocEvent.dart';
 import 'package:ecar/Backend/BLOCS/homeBloc/HomeblocState.dart';
 import 'package:ecar/Backend/CarStructure/carController.dart';
+import 'package:ecar/Backend/carNotes.dart/carNoteScreen.dart';
 import 'package:ecar/Backend/carNotes.dart/notesController.dart';
 import 'package:ecar/Backend/carNotes.dart/notesModel.dart';
 import 'package:ecar/Backend/for_User/ProfileController.dart';
@@ -12,6 +13,7 @@ import 'package:ecar/tools/colorsTool.dart';
 import 'package:ecar/tools/snacks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
@@ -36,7 +38,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           backgroundColor: blueColor,
           triggerMode: RefreshIndicatorTriggerMode.onEdge,
           color: white,
-          onRefresh: () async => refreshBloc,
+          onRefresh: () async => RefreshData(),
           child: SingleChildScrollView(
             child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -57,7 +59,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 )),
           ),
         )),
-        floatingActionButton: homeFloatingActionButton);
+        floatingActionButton: HomeFloatingActionButton());
   }
 
   MultiBlocProvider notesAvailable() {
@@ -190,11 +192,109 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               },
             );
           } else if (stateN is HBlocNoData) {
-            return ifThereisAnyNotes;
+            return IfThereisAnyNotes();
           } else if (stateN is HBlocError) {
             oops;
           }
           return Container();
+        },
+      ),
+    );
+  }
+}
+
+homeFunctions() => Column(
+      children: [
+        Column(
+          children: [
+            CarImageAndcarmakemodelhomeScreen(),
+            hSpace,
+            CarImageAndcarmakemodelhomeScreen(),
+            hSpace,
+            SearchBarHomeScreen(),
+            hSpace,
+            notesAvailable()
+          ],
+        ),
+      ],
+    );
+
+class HomeFloatingActionButton extends StatelessWidget {
+  const HomeFloatingActionButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SpeedDial(
+      animationCurve: Curves.slowMiddle,
+      //
+      curve: Curves.slowMiddle,
+      //
+      overlayOpacity: 0.3,
+      //
+      elevation: 3,
+      //
+      backgroundColor: blueColor,
+      foregroundColor: white,
+      //
+      icon: Icons.add,
+      //
+      activeIcon: Icons.close,
+      //
+      childPadding: const EdgeInsets.all(5),
+      //
+      spaceBetweenChildren: 4,
+      //
+      children: [
+        SpeedDialChild(
+            onTap: () => Get.to(() => const Carnotescreen()),
+            child: Text("K", style: GoogleFonts.jua(fontSize: 30)),
+            foregroundColor: blueColor,
+            label: 'Add notes',
+            labelStyle: const TextStyle(color: blueColor)),
+      ],
+    );
+  }
+}
+
+class IfThereisAnyNotes extends StatelessWidget {
+  const IfThereisAnyNotes({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 50),
+      child: GestureDetector(
+        onTap: () => Get.to(() => const Carnotescreen()),
+        child: const Column(
+          children: [
+            Icon(
+              Iconsax.note,
+              size: 64,
+            ),
+            Text('You can add your notes from here!')
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class RefreshData extends StatelessWidget {
+  const RefreshData({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => HBlocIntegration(noteController)..add(HBlocLoad()),
+      child: BlocBuilder(
+        builder: (context, state) {
+          return homeFunctions();
         },
       ),
     );
