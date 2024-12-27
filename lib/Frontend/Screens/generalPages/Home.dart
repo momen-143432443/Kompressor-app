@@ -8,7 +8,7 @@ import 'package:ecar/Backend/carNotes.dart/notesController.dart';
 import 'package:ecar/Backend/carNotes.dart/notesModel.dart';
 import 'package:ecar/Backend/for_User/ProfileController.dart';
 import 'package:ecar/Frontend/Screens/generalPages/ProfileScreen.dart';
-import 'package:ecar/Frontend/widgets.dart';
+import 'package:ecar/Frontend/GerenalFunctions.dart';
 import 'package:ecar/tools/colorsTool.dart';
 import 'package:ecar/tools/snacks.dart';
 import 'package:flutter/material.dart';
@@ -203,6 +203,147 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   }
 }
 
+MultiBlocProvider availablenotesAvailable() {
+  return MultiBlocProvider(
+    providers: [
+      BlocProvider(
+        create: (context) =>
+            HBlocIntegration(Notescontroller())..add(HBlocLoad()),
+      ),
+    ],
+    child: BlocBuilder<HBlocIntegration, Homeblocstate>(
+      builder: (context, stateN) {
+        if (stateN is HBlocLoading) {
+          return const Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CardLoading(
+                  height: 30,
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  width: 100,
+                  margin: EdgeInsets.only(bottom: 10),
+                ),
+                CardLoading(
+                  height: 100,
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  margin: EdgeInsets.only(bottom: 10),
+                ),
+                CardLoading(
+                  height: 30,
+                  width: 200,
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  margin: EdgeInsets.only(bottom: 10),
+                ),
+              ],
+            ),
+          );
+        }
+        if (stateN is HBlocLoaded) {
+          List<NotesModel> noteList = stateN.notesModel;
+          return BlocBuilder<HBlocIntegration, Homeblocstate>(
+            builder: (context, state) {
+              return Container(
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(12)),
+                  width: 400,
+                  height: container.height / 3.60,
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: noteList.length,
+                    itemBuilder: (c, index) {
+                      return PopupMenuButton<String>(
+                        offset: const Offset(22, 34),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(13)),
+                        itemBuilder: (context) {
+                          return [
+                            PopupMenuItem<String>(
+                              value: '1',
+                              child: Text(
+                                  'The note will be delete at ${DateFormat('dd/MM hh:mm a').format(stateN.notesModel[index].timePost.toDate()).toString()}'),
+                            ),
+                          ];
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Dismissible(
+                              movementDuration: const Duration(seconds: 2),
+                              key: UniqueKey(),
+                              direction: DismissDirection.endToStart,
+                              onDismissed: (DismissDirection direction) =>
+                                  context
+                                      .read<HBlocIntegration>()
+                                      .add(HBlocDeleteE(noteList[index].docId)),
+                              background: Card(
+                                elevation: 4,
+                                color: redColor,
+                                child: Padding(
+                                  padding: appSym,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Icon(
+                                        Icons.delete,
+                                        color: Colors.transparent,
+                                      ),
+                                      Icon(
+                                        Icons.delete,
+                                        color: white,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              child: Container(
+                                width: 400,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: BoxDecoration(
+                                    color: carGrey,
+                                    borderRadius: BorderRadius.circular(12)),
+                                child: ListTile(
+                                    title: Text(
+                                        stateN.notesModel[index].subject,
+                                        style: const TextStyle(color: white)),
+                                    subtitle: Text(
+                                        stateN.notesModel[index].title,
+                                        style: const TextStyle(color: white)),
+                                    trailing: Padding(
+                                      padding: const EdgeInsets.only(
+                                          bottom: 35, left: 120),
+                                      child: Text(
+                                        DateFormat('dd/MM hh:mm a')
+                                            .format(stateN
+                                                .notesModel[index].timePost
+                                                .toDate())
+                                            .toString(),
+                                        style: const TextStyle(color: white),
+                                      ),
+                                    )),
+                              ),
+                            ),
+                            h2,
+                          ],
+                        ),
+                      );
+                    },
+                  ));
+            },
+          );
+        } else if (stateN is HBlocNoData) {
+          return ifThereisAnyNotes;
+        } else if (stateN is HBlocError) {
+          oops;
+        }
+        return Container();
+      },
+    ),
+  );
+}
+
 homeFunctions() => Column(
       children: [
         Column(
@@ -213,7 +354,7 @@ homeFunctions() => Column(
             hSpace,
             SearchBarHomeScreen(),
             hSpace,
-            notesAvailable()
+            availablenotesAvailable()
           ],
         ),
       ],

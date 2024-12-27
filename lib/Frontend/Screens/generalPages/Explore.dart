@@ -3,7 +3,7 @@ import 'package:ecar/Frontend/Screens/generalPages/ExplorerTriggers/CarServices.
 import 'package:ecar/Frontend/Screens/generalPages/ExplorerTriggers/Eshop/Eshop.dart';
 import 'package:ecar/Frontend/Screens/generalPages/ExplorerTriggers/KWallet.dart';
 import 'package:ecar/Frontend/Screens/generalPages/ExplorerTriggers/TelephonePage.dart';
-import 'package:ecar/Frontend/widgets.dart';
+import 'package:ecar/Frontend/GerenalFunctions.dart';
 import 'package:ecar/tools/colorsTool.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

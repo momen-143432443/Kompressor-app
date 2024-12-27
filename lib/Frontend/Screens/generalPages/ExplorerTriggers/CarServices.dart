@@ -1,4 +1,4 @@
-import 'package:ecar/Frontend/widgets.dart';
+import 'package:ecar/Frontend/GerenalFunctions.dart';
 import 'package:ecar/tools/colorsTool.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,12 +28,50 @@ class _CarServicesState extends State<CarServices> {
             ),
             height1,
             hSPACE,
+            RegularServicesText(),
             RegularService(),
             hSPACE,
+            UrgentServicesText(),
             UrgentService()
           ],
         ),
       )),
+    );
+  }
+}
+
+class UrgentServicesText extends StatelessWidget {
+  const UrgentServicesText({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 220),
+      child: Text(
+        "Urgent services",
+        style: GoogleFonts.aleo(
+            fontSize: 25, fontWeight: FontWeight.w500, color: black),
+      ),
+    );
+  }
+}
+
+class RegularServicesText extends StatelessWidget {
+  const RegularServicesText({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 220),
+      child: Text(
+        "Regular services",
+        style: GoogleFonts.aleo(
+            fontSize: 25, fontWeight: FontWeight.w500, color: black),
+      ),
     );
   }
 }
@@ -46,8 +84,8 @@ class UrgentService extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: widthOfButton.height / 2.6 + 14,
-      width: widthOfImages.width / 1.1,
+      height: widthOfButton.height / 2.6 + 15,
+      width: widthOfImages.width / 1.07,
       decoration:
           BoxDecoration(color: grey, borderRadius: BorderRadius.circular(12)),
       child: Column(
@@ -181,8 +219,8 @@ class UrgentService extends StatelessWidget {
                       color: white,
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: Text("Urgent\neletric charging",
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Text("Urgent\neletric charge",
                           style: GoogleFonts.aleo(
                               fontSize: 20,
                               fontWeight: FontWeight.w500,
@@ -208,7 +246,7 @@ class RegularService extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: widthOfButton.height / 4.4,
-      width: widthOfImages.width / 1.1,
+      width: widthOfImages.width / 1.07,
       decoration:
           BoxDecoration(color: grey, borderRadius: BorderRadius.circular(12)),
       child: Row(

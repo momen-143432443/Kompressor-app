@@ -1,5 +1,5 @@
 import 'package:ecar/Backend/CarStructure/carController.dart';
-import 'package:ecar/Frontend/widgets.dart';
+import 'package:ecar/Frontend/GerenalFunctions.dart';
 import 'package:ecar/main.dart';
 import 'package:ecar/tools/navigationBar.dart';
 import 'package:ecar/tools/colorsTool.dart';

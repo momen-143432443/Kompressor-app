@@ -1,6 +1,6 @@
 import 'package:ecar/Backend/validator.dart';
 import 'package:ecar/Frontend/Screens/generalPages/RsesndPasswordScreen.dart';
-import 'package:ecar/Frontend/widgets.dart';
+import 'package:ecar/Frontend/GerenalFunctions.dart';
 import 'package:ecar/tools/colorsTool.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

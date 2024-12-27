@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:card_loading/card_loading.dart';
 import 'package:ecar/Backend/BLOCS/ProfilePageBloc/profiePageEvent.dart';
 import 'package:ecar/Backend/BLOCS/ProfilePageBloc/profilePageIntegreation.dart';
 import 'package:ecar/Backend/BLOCS/ProfilePageBloc/profilePageState.dart';
@@ -6,10 +7,13 @@ import 'package:ecar/Backend/BLOCS/homeBloc/HomeBlocItregration.dart';
 import 'package:ecar/Backend/BLOCS/homeBloc/HomeblocEvent.dart';
 import 'package:ecar/Backend/BLOCS/homeBloc/HomeblocState.dart';
 import 'package:ecar/Backend/CarStructure/carController.dart';
+import 'package:ecar/Backend/carNotes.dart/notesController.dart';
+import 'package:ecar/Backend/carNotes.dart/notesModel.dart';
 import 'package:ecar/Backend/for_User/ProfileController.dart';
+import 'package:ecar/Frontend/Screens/CarInfoPages/NewCarInfo.dart';
 import 'package:ecar/Frontend/Screens/generalPages/SettingParts/settings.dart';
 import 'package:ecar/Frontend/Screens/generalPages/UpdatePage.dart';
-import 'package:ecar/Frontend/widgets.dart';
+import 'package:ecar/Frontend/GerenalFunctions.dart';
 import 'package:ecar/main.dart';
 import 'package:ecar/tools/colorsTool.dart';
 import 'package:ecar/tools/snacks.dart';
@@ -18,6 +22,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl/intl.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -138,9 +143,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ],
                             ),
-                            editCarInformations,
+                            EditCarInformations(),
                             const Divider(),
-                            carNotes,
+                            CarNotes(),
                             notesAvailable()
                           ],
                         ),
@@ -150,23 +155,151 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ]);
             } else if (state is HblocCarImageNameError) {
-              Get.showSnackbar(GetSnackBar(
-                  animationDuration: const Duration(seconds: 2),
-                  duration: const Duration(seconds: 2),
-                  maxWidth: widthOfButton.width / 1.3,
-                  title: 'Error',
-                  message: 'Something went wrong.',
-                  margin: const EdgeInsets.only(bottom: 13),
-                  shouldIconPulse: true,
-                  borderRadius: 100,
-                  barBlur: 50,
-                  borderColor: black,
-                  backgroundColor: redColor,
-                  icon: const Icon(Icons.error)));
+              exceptions(state.e.toString());
             }
             return Container();
           },
         ));
+  }
+
+  MultiBlocProvider notesAvailable() {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+              HBlocIntegration(Notescontroller())..add(HBlocLoad()),
+        ),
+      ],
+      child: BlocBuilder<HBlocIntegration, Homeblocstate>(
+        builder: (context, stateN) {
+          if (stateN is HBlocLoading) {
+            return const Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CardLoading(
+                    height: 30,
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                    width: 100,
+                    margin: EdgeInsets.only(bottom: 10),
+                  ),
+                  CardLoading(
+                    height: 100,
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                    margin: EdgeInsets.only(bottom: 10),
+                  ),
+                  CardLoading(
+                    height: 30,
+                    width: 200,
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                    margin: EdgeInsets.only(bottom: 10),
+                  ),
+                ],
+              ),
+            );
+          }
+          if (stateN is HBlocLoaded) {
+            List<NotesModel> noteList = stateN.notesModel;
+            return BlocBuilder<HBlocIntegration, Homeblocstate>(
+              builder: (context, state) {
+                return Container(
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(12)),
+                    width: 400,
+                    height: container.height / 3.60,
+                    child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: noteList.length,
+                      itemBuilder: (c, index) {
+                        return PopupMenuButton<String>(
+                          offset: const Offset(22, 34),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(13)),
+                          itemBuilder: (context) {
+                            return [
+                              PopupMenuItem<String>(
+                                value: '1',
+                                child: Text(
+                                    'The note will be delete at ${DateFormat('dd/MM hh:mm a').format(stateN.notesModel[index].timePost.toDate()).toString()}'),
+                              ),
+                            ];
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Dismissible(
+                                movementDuration: const Duration(seconds: 2),
+                                key: UniqueKey(),
+                                direction: DismissDirection.endToStart,
+                                onDismissed: (DismissDirection direction) =>
+                                    context.read<HBlocIntegration>().add(
+                                        HBlocDeleteE(noteList[index].docId)),
+                                background: Card(
+                                  elevation: 4,
+                                  color: redColor,
+                                  child: Padding(
+                                    padding: appSym,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Icon(
+                                          Icons.delete,
+                                          color: Colors.transparent,
+                                        ),
+                                        Icon(
+                                          Icons.delete,
+                                          color: white,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                child: Container(
+                                  width: 400,
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: BoxDecoration(
+                                      color: carGrey,
+                                      borderRadius: BorderRadius.circular(12)),
+                                  child: ListTile(
+                                      title: Text(
+                                          stateN.notesModel[index].subject,
+                                          style: const TextStyle(color: white)),
+                                      subtitle: Text(
+                                          stateN.notesModel[index].title,
+                                          style: const TextStyle(color: white)),
+                                      trailing: Padding(
+                                        padding: const EdgeInsets.only(
+                                            bottom: 35, left: 120),
+                                        child: Text(
+                                          DateFormat('dd/MM hh:mm a')
+                                              .format(stateN
+                                                  .notesModel[index].timePost
+                                                  .toDate())
+                                              .toString(),
+                                          style: const TextStyle(color: white),
+                                        ),
+                                      )),
+                                ),
+                              ),
+                              h2,
+                            ],
+                          ),
+                        );
+                      },
+                    ));
+              },
+            );
+          } else if (stateN is HBlocNoData) {
+            return ifThereisAnyNotes;
+          } else if (stateN is HBlocError) {
+            oops;
+          }
+          return Container();
+        },
+      ),
+    );
   }
 
   MultiBlocProvider userController() {
@@ -286,6 +419,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
             return Container();
           },
         ));
+  }
+}
+
+class EditCarInformations extends StatelessWidget {
+  const EditCarInformations({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () => Get.off(() => const NewCarInfo()),
+      style:
+          const ButtonStyle(backgroundColor: WidgetStatePropertyAll(blueColor)),
+      child:
+          const Text('Edit car informations', style: TextStyle(color: white)),
+    );
+  }
+}
+
+class CarNotes extends StatelessWidget {
+  const CarNotes({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 250),
+            child: Text(
+              'Car notes',
+              style: GoogleFonts.aleo(fontSize: 20, color: black),
+            ),
+          ),
+          // notesAvailable
+        ],
+      ),
+    );
   }
 }
 
