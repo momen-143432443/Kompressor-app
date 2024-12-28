@@ -21,6 +21,7 @@ class LoginController extends GetxController {
   final email = TextEditingController();
   final password = TextEditingController();
   GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
+  final usr = Rxn<User>();
   Rx<UserModel> user = UserModel.usersModelempty().obs;
   final localStorage = GetStorage();
   final remeberMe = false.obs;
@@ -28,9 +29,12 @@ class LoginController extends GetxController {
 
   @override
   void onInit() {
+    super.onInit();
     email.text = localStorage.read('Remember_me_Email') ?? '';
     password.text = localStorage.read('Remember_me_Password') ?? '';
-    super.onInit();
+    AuthenticationRespository.instance.auth.authStateChanges().listen(
+          (User? usrr) => usr.value = usrr,
+        );
   }
 
   final isLoader = false.obs;
@@ -105,21 +109,33 @@ class LoginController extends GetxController {
 
   Future<void> googleSignIn() async {
     final auth = AuthenticationRespository.instance;
-    final pro =
-        auth.auth.currentUser?.providerData.map((e) => e.providerId).first;
     try {
-      if (pro!.isEmpty) {
+      if (usr.value != null) {
+        await auth.signInWithGoogle();
+        auth.screenRediect();
+      } else if (usr.value == null) {
         return signUpFirst();
-      } else if (pro.isNotEmpty) {
-        if (pro == 'google.com') {
-          await auth.signInWithGoogle();
-          auth.screenRediect();
-        }
       }
+    } on FirebaseAuthException catch (e) {
+      exceptions(e.message.toString());
+    } on PlatformException catch (e) {
+      exceptions(e.message.toString());
     } catch (e) {
-      if (e is FirebaseAuthException && e.code == 'user-not-foun') {
-        return signUpFirst();
-      }
+      exceptions(e.toString());
     }
+    // try {
+    //   if (pro!.isEmpty) {
+    //     return signUpFirst();
+    //   } else if (pro.isNotEmpty) {
+    //     if (pro == 'google.com') {
+    //       await auth.signInWithGoogle();
+    //       auth.screenRediect();
+    //     }
+    //   }
+    // } catch (e) {
+    //   if (e is FirebaseAuthException && e.code == 'user-not-foun') {
+    //     return signUpFirst();
+    //   }
+    // }
   }
 }
